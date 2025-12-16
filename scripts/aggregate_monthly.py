@@ -1,7 +1,7 @@
 import pandas as pd
 from utils.logger import get_logger
 from utils.config import (
-    HOURLY_OUTPUT_CSV_PATH,
+    HISTORICAL_OUTPUT_CSV_PATH,
     MONTHLY_OUTPUT_CSV_PATH,
     CLEAR_SKY_THRESHOLD,
     WIND_SAFE_THRESHOLD_MS,
@@ -11,7 +11,7 @@ from utils.config import (
 logger = get_logger(__name__)
 
 def aggregate_monthly():
-    df = pd.read_csv(HOURLY_OUTPUT_CSV_PATH)
+    df = pd.read_csv(HISTORICAL_OUTPUT_CSV_PATH)
     if df.empty:
         raise ValueError("Hourly data is empty")
 

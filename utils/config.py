@@ -1,4 +1,5 @@
-WEATHER_API_URL = "https://api.open-meteo.com/v1/forecast"
+FORECAST_API_URL = "https://api.open-meteo.com/v1/forecast"
+ARCHIVE_API_URL = "https://archive-api.open-meteo.com/v1/archive"  # historical
 
 # Cities studied
 CITIES = {
@@ -65,7 +66,8 @@ DAILY_VARIABLES = "sunrise,sunset"
 # File paths
 RAW_DATA_DIR = "data/raw"
 HOURLY_OUTPUT_CSV_PATH = "data/weather_hourly_multi_city.csv"
-MONTHLY_OUTPUT_CSV_PATH = "data/weather_monthly_multi_city.csv"
+MONTHLY_OUTPUT_CSV_PATH = "data/weather_monthly_historical_multi_city.csv"
+HISTORICAL_OUTPUT_CSV_PATH = "data/weather_hourly_historical_multi_city.csv"
 
 # Thresholds for analysis
 CLEAR_SKY_THRESHOLD = 30.0       # % cloud cover
