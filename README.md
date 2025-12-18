@@ -4,6 +4,7 @@ This project collects weather data for several cities (mainly in Japan) and uses
 - Which months have clearer skies or less rain?
 - How often is the Hakone ropeway likely to be open?
 - If I’m visiting soon, which days are better for visibility?
+
 The goal is to practice building a small but realistic data pipeline and to explore how weather data can be used for decision-making.
 
 # What this project does
@@ -16,6 +17,7 @@ Aggregates it into monthly metrics, such as:
 - number of rain-free days
 - number of snow days
 - days safe for the Hakone ropeway (low wind)
+
 This is used to understand seasonal patterns and decide when to travel.
 ## 2. Forecast data (on site)
 Uses short-term weather forecasts
