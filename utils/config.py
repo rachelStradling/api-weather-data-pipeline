@@ -56,6 +56,7 @@ HOURLY_VARIABLES = (
     "relative_humidity_2m,"
     "precipitation,"
     "wind_speed_10m,"
+    "wind_gusts_10m,"
     "cloud_cover," # Visibility proxy
     "snowfall"
 )
@@ -71,5 +72,6 @@ HISTORICAL_OUTPUT_CSV_PATH = "data/weather_hourly_historical_multi_city.csv"
 
 # Thresholds for analysis
 CLEAR_SKY_THRESHOLD = 30.0       # % cloud cover
-WIND_SAFE_THRESHOLD_MS = 10.0    # m/s for ropeway safety
+WIND_SAFE_THRESHOLD_MS = 10.0    # steady wind - for ropeway safety
+WIND_GUST_SAFE_THRESHOLD_MS = 15.0 # gusts of wind - for ropeway safety
 SNOW_EVENT_THRESHOLD_MM = 5.0    # daily snowfall to count as "snow event"

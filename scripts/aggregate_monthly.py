@@ -27,6 +27,7 @@ def aggregate_monthly():
     daily = df.groupby(["city", "year_month", "date"]).agg(
         avg_temp_c=("temperature_c", "mean"),
         max_wind_speed=("wind_speed_10m", "max"),
+        max_wind_gust=("wind_gusts_10m", "max"),
         total_precip=("precipitation", "sum"),
         total_snowfall=("snowfall", "sum"),
         snow_hours=("has_snow", "sum"),
@@ -35,7 +36,10 @@ def aggregate_monthly():
     ).reset_index()
 
     # Flags per day
-    daily["is_ropeway_safe_day"] = daily["max_wind_speed"] < WIND_SAFE_THRESHOLD_MS
+    daily["is_ropeway_safe_day"] = (
+    (daily["max_wind_speed"] < WIND_SAFE_THRESHOLD_MS)
+    & (daily["max_wind_gust"] < WIND_GUST_SAFE_THRESHOLD_MS)
+        )
     daily["is_rain_free_day"] = daily["total_precip"] == 0
     daily["is_snow_event_day"] = daily["total_snowfall"] > SNOW_EVENT_THRESHOLD_MM
 
