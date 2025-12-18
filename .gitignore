@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+.venv/
+venv/
+
+# Generated data
+data/*.csv
+data/raw/
+
+# Credentials
+*.json
