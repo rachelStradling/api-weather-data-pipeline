@@ -12,6 +12,7 @@ The project has two main parts:
 ## 1. Historical data (planning ahead)
 Uses historical weather data (archive API)
 Collects hourly data for each city
+Loads this data into BigQuery
 Aggregates it into monthly metrics, such as:
 - share of clear daytime hours
 - number of rain-free days
@@ -24,20 +25,24 @@ Uses short-term weather forecasts
 Intended for day-by-day decisions once the trip is close
 Not aggregated monthly (forecast is too short for that)
 
-# Data source
-Weather data comes from Open-Meteo:
-- Forecast API for short-term weather
-- Archive API for historical weather
-- No API key is required.
+# Tech stack
+- Python for data ingestion and transformation
+- Open-Meteo API for weather data
+- BigQuery as the data warehouse
+- Pandas for data processing
+- Google Cloud SDK for authentication
 
 # How to run the project
 ## 1. Fetch historical data (example: all of 2025)
 `python -m scripts.fetch_historical --start-date 2025-01-01 --end-date 2025-12-31`
 This creates an hourly historical dataset for all configured cities.
-## 2. Create monthly metrics from historical data
+## 2. Loads this historical data to BigQuery
+`python -m scripts.load_historical_to_bigquery`
+This uploads the historical hourly data to BigQuery. This is not yet exploited but will be in a future version.
+## 3. Create monthly metrics from the historical data
 `python -m scripts.aggregate_monthly`
 This produces a monthly dataset with travel-oriented metrics.
-## 3. (Optional) Fetch forecast data
+## 4. Fetch forecast data
 `python -m scripts.run_pipeline`
 This fetches short-term forecast data, useful for on-site planning.
 
