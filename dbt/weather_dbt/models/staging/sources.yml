@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: weather
+    database: weather-travel-recommendations
+    schema: weather
+    tables:
+      - name: hourly_historical
+

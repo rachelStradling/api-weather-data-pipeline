@@ -1,0 +1,13 @@
+weather_dbt:
+  outputs:
+    dev:
+      dataset: weather_dbt_dev
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      location: EU
+      method: oauth
+      priority: interactive
+      project: weather-travel-recommendations
+      threads: 2
+      type: bigquery
+  target: dev
