@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: stg_hourly_historical
+    description: "Staging model for raw hourly weather data from Open-Meteo. Cleans types and adds day/night flags."
+    columns:
+      - name: city
+        description: "City name as returned by the API."
+        tests:
+          - not_null
+      - name: timestamp
+        description: "Hourly timestamp for the weather observation."
+        tests:
+          - not_null
+      - name: is_daytime
+        description: "Boolean flag indicating whether the hour is between local sunrise and sunset."
+      - name: sunrise_dt
+        description: "Local datetime of sunrise for the day."
+      - name: sunset_dt
+        description: "Local datetime of sunset for the day."
+
+  - name: int_weather_daily
+    description: "Intermediate daily aggregates per city, used as a building block for monthly travel metrics."
+    columns:
+      - name: city
+        description: "City name."
+        tests:
+          - not_null
+      - name: date
+        description: "Calendar date of the daily aggregate."
+        tests:
+          - not_null
+      - name: avg_temp_c
+        description: "Average temperature across all hourly readings for the day, in °C."
+      - name: max_daytime_wind_speed
+        description: "Maximum daytime wind speed (10m) for the day, in m/s."
+      - name: max_daytime_wind_gust
+        description: "Maximum daytime wind gust (10m) for the day, in m/s."
+      - name: rain_free_day
+        description: "TRUE if no precipitation was recorded that day."
+      - name: snow_event_day
+        description: "TRUE if any snowfall was recorded that day."
+      - name: ropeway_safe_day
+        description: "TRUE if daytime wind and gusts stayed below ropeway safety thresholds that day."
+
+  - name: mart_weather_monthly
+    description: "Monthly travel-oriented metrics per city, based on daily weather aggregates."
+    columns:
+      - name: city
+        description: "City name."
+        tests:
+          - not_null
+      - name: month_start_date
+        description: "First day of the month (used as a month key)."
+      - name: year_month
+        description: "Month label in YYYY-MM format."
+      - name: days_in_month_with_data
+        description: "Number of distinct days with data in this month."
+      - name: avg_monthly_temp_c
+        description: "Average of daily average temperatures in the month."
+      - name: ropeway_safe_days_ratio
+        description: "Share of days in the month where daytime wind/gusts stayed under ropeway thresholds."
+      - name: rain_free_days_ratio
+        description: "Share of days in the month with no precipitation."
+      - name: snow_event_days_ratio
+        description: "Share of days in the month with any snowfall."
+      - name: avg_snow_intensity_mm
+        description: "Average daily snowfall on days where it snowed, in mm."
+      - name: daytime_clear_sky_hours_ratio
+        description: "Fraction of daytime hours with low cloud cover (< 30%) for the month."
+
