@@ -1,53 +1,107 @@
-# Weather Data Project – Travel Planning
-This project collects weather data for several cities (mainly in Japan) and uses it to answer practical travel questions, such as:
-- When is the best time of year to visit a city?
-- Which months have clearer skies or less rain?
-- How often is the Hakone ropeway likely to be open?
-- If I’m visiting soon, which days are better for visibility?
+# Weather Travel Data Pipeline
 
-The goal is to practice building a small but realistic data pipeline and to explore how weather data can be used for decision-making.
+A small end-to-end project to practice a modern data engineering / analytics stack using real weather data.
 
-# What this project does
-The project has two main parts:
-## 1. Historical data (planning ahead)
-Uses historical weather data (archive API)
-Collects hourly data for each city
-Loads this data into BigQuery
-Aggregates it into monthly metrics, such as:
-- share of clear daytime hours
-- number of rain-free days
-- number of snow days
-- days safe for the Hakone ropeway (low wind)
+The pipeline collects hourly weather conditions from the Open-Meteo API, stores them in BigQuery, and transforms them with dbt to produce clean models and travel-relevant metrics (clear-sky ratios, ropeway safety days, rainfall patterns, etc.).  
+The long-term goal is to make it easier to evaluate the best time of year to visit Japanese destinations like Hakone, Kanazawa, Osaka, and more.
 
-This is used to understand seasonal patterns and decide when to travel.
-## 2. Forecast data (on site)
-Uses short-term weather forecasts
-Intended for day-by-day decisions once the trip is close
-Not aggregated monthly (forecast is too short for that)
+---
 
-# Tech stack
-- Python for data ingestion and transformation
-- Open-Meteo API for weather data
-- BigQuery as the data warehouse
-- Pandas for data processing
-- Google Cloud SDK for authentication
+## 🧭 Project Overview
 
-# How to run the project
-## 1. Fetch historical data (example: all of 2025)
-`python -m scripts.fetch_historical --start-date 2025-01-01 --end-date 2025-12-31`
-This creates an hourly historical dataset for all configured cities.
-## 2. Loads this historical data to BigQuery
-`python -m scripts.load_historical_to_bigquery`
-This uploads the historical hourly data to BigQuery. This is not yet exploited but will be in a future version.
-## 3. Create monthly metrics from the historical data
-`python -m scripts.aggregate_monthly`
-This produces a monthly dataset with travel-oriented metrics.
-## 4. Fetch forecast data
-`python -m scripts.run_pipeline`
-This fetches short-term forecast data, useful for on-site planning.
+**Flow:**
+
+1. **Python**
+   - Fetches raw weather data (hourly + historical) from the Open-Meteo API  
+   - Prepares the data for loading  
+   - Loads it into the BigQuery dataset `weather`
+
+2. **BigQuery**
+   - Stores all raw weather data (hourly historical for multiple cities)
+   - Acts as the central warehouse for transformations and analysis
+
+3. **dbt**
+   - Builds cleaned/staging models on top of the raw tables
+   - Adds typed columns (proper datetimes, day/night flags)
+   - Will gradually add daily and monthly metrics
+
+This structure is intentionally simple but mirrors a real analytics engineering setup.
+
+---
+
+## ⚙️ Local Setup
+
+### 1. Python environment
+
+From the project root:
+
+```bash
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+## 2. Run the ingestion Pipeline
+
+This fetches data from the API and loads it into BigQuery:
+
+```
+python -m scripts.run_pipeline
+```
+
+## 📦 dbt Setup
+
+dbt uses a separate local configuration file for connection details:
+```
+~/.dbt/profiles.yml
+```
+
+Example profile (BigQuery + OAuth):
+```
+weather_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: weather-travel-recommendations
+      dataset: weather_dbt_dev
+      location: EU
+      threads: 2
+```
+
+Run dbt commands from the dbt project folder:
+```
+cd dbt/weather_dbt
+dbt debug    # check connection to BigQuery
+dbt run      # build models
+```
+
+## 📊 Current dbt Models
+
+### stg_hourly_historical
 
 
-# Notes
-- Cities, weather variables, and thresholds are defined in utils/config.py
-- The project focuses on clarity and learning, not performance or scale
-- This is a learning project, not a production system
+Staging model that:
+- Reads raw weather data from ```weather.hourly_historical``` in BigQuery
+- Casts sunrise and sunset from strings to proper DATETIME fields
+- Derives a ```hour_dt``` helper column from the ```timestamp```
+- Recomputes ```is_daytime``` based on sunrise/sunset boundaries
+- Cleans types for downstream daily and monthly metrics
+
+### Planned models (in progress)
+- Daily summaries per city (wind, gusts, rain, snow, daytime visibility hours)
+- Monthly metrics to compare cities and months:
+  - clear-sky ratios
+  - rain-free days ratio
+  - ropeway “safe days” (daytime wind thresholds)
+  - snowfall-related indicators (especially for Kanazawa)
+- Travel-oriented “best time to visit” views
+
+## 🎯 Project Purpose
+This project is used to:
+- Practice Python → BigQuery → dbt on a realistic but manageable dataset
+- Explore how raw API data can be turned into clean, queryable models
+- Build metrics relevant for trip planning (weather, visibility, ropeway operation)
+- Demonstrate an entry-level data engineering / analytics engineering stack
+It’s a learning project first, with the bonus of producing data that can genuinely inform future travel decisions.
