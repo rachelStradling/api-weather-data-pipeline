@@ -50,6 +50,10 @@ CITIES = {
     },
 }
 
+# Historical data range for Open-Meteo archive extraction
+ARCHIVE_START_DATE = "2022-01-01"
+ARCHIVE_END_DATE = "2025-12-31"
+
 # Hourly variables to request
 HOURLY_VARIABLES = (
     "temperature_2m,"
@@ -63,6 +67,7 @@ HOURLY_VARIABLES = (
 
 # Daily variables for sunrise/sunset
 DAILY_VARIABLES = "sunrise,sunset"
+
 
 # File paths
 RAW_DATA_DIR = "data/raw"
