@@ -40,8 +40,9 @@ def extract_historical(city_name: str, start_date: str, end_date: str):
         if response.status_code == 200:
             data = response.json()
 
-            os.makedirs(RAW_DATA_DIR, exist_ok=True)
-            raw_path = os.path.join(RAW_DATA_DIR, f"weather_archive_{city_name}_{start_date}_{end_date}.json")
+            historical_dir = os.path.join(RAW_DATA_DIR, "historical")
+            os.makedirs(historical_dir, exist_ok=True)
+            raw_path = os.path.join(historical_dir, f"weather_archive_{city_name}_{start_date}_{end_date}.json")
             with open(raw_path, "w") as f:
                 json.dump(data, f)
 

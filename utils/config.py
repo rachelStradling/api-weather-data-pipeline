@@ -50,9 +50,10 @@ CITIES = {
     },
 }
 
-# Historical data range for Open-Meteo archive extraction
+# Data ranges for Open-Meteo archive extraction and forecast data
 ARCHIVE_START_DATE = "2022-01-01"
 ARCHIVE_END_DATE = "2025-12-31"
+FORECAST_DAYS = 7
 
 # Hourly variables to request
 HOURLY_VARIABLES = (
@@ -70,10 +71,8 @@ DAILY_VARIABLES = "sunrise,sunset"
 
 
 # File paths
-RAW_DATA_DIR = "data/raw"
-HOURLY_OUTPUT_CSV_PATH = "data/weather_hourly_multi_city.csv"
-MONTHLY_OUTPUT_CSV_PATH = "data/weather_monthly_historical_multi_city.csv"
-HISTORICAL_OUTPUT_CSV_PATH = "data/weather_hourly_historical_multi_city.csv"
+RAW_DATA_DIR="data/raw"
+HISTORICAL_OUTPUT_CSV_PATH = "data/raw/historical/weather_hourly_historical_multi_city.csv"
 
 # Thresholds for analysis
 CLEAR_SKY_THRESHOLD = 30.0       # % cloud cover
