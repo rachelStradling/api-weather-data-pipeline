@@ -1,3 +1,4 @@
+import time
 import json
 import os
 import requests
@@ -6,6 +7,9 @@ from utils.logger import get_logger
 from utils.config import ARCHIVE_API_URL, CITIES, HOURLY_VARIABLES, DAILY_VARIABLES, RAW_DATA_DIR
 
 logger = get_logger(__name__)
+
+MAX_RETRIES = 5
+RETRY_SLEEP_SECONDS = 60  # wait 1 min on 429
 
 def extract_historical(city_name: str, start_date: str, end_date: str):
     """
@@ -16,7 +20,7 @@ def extract_historical(city_name: str, start_date: str, end_date: str):
         raise ValueError(f"City '{city_name}' not found in CITIES config")
 
     city_cfg = CITIES[city_name]
-
+    
     params = {
         "latitude": city_cfg["latitude"],
         "longitude": city_cfg["longitude"],
@@ -28,18 +32,36 @@ def extract_historical(city_name: str, start_date: str, end_date: str):
     }
 
     logger.info(f"[archive] Requesting {city_name} from {start_date} to {end_date}")
-    response = requests.get(ARCHIVE_API_URL, params=params, timeout=60)
 
-    if response.status_code != 200:
-        logger.error(f"[archive] API error for {city_name}: {response.status_code} - {response.text}")
+    for attempt in range(1, MAX_RETRIES + 1):
+        
+        response = requests.get(ARCHIVE_API_URL, params=params)
+
+        if response.status_code == 200:
+            data = response.json()
+
+            os.makedirs(RAW_DATA_DIR, exist_ok=True)
+            raw_path = os.path.join(RAW_DATA_DIR, f"weather_archive_{city_name}_{start_date}_{end_date}.json")
+            with open(raw_path, "w") as f:
+                json.dump(data, f)
+
+            logger.info(f"[archive] Saved raw data to {raw_path}")
+            return data
+
+        if response.status_code == 429:
+            logger.error(
+                f"[archive] API rate limit for {city_name}: 429. "
+                f"Attempt {attempt}/{MAX_RETRIES}. Waiting {RETRY_SLEEP_SECONDS} seconds..."
+            )
+            time.sleep(RETRY_SLEEP_SECONDS)
+            continue  # try again
+
+        # other errors
+        logger.error(
+            f"[archive] API error for {city_name}: {response.status_code} - {response.text}"
+        )
         raise Exception(f"Archive API request failed for {city_name} with {response.status_code}")
 
-    data = response.json()
 
-    os.makedirs(RAW_DATA_DIR, exist_ok=True)
-    raw_path = os.path.join(RAW_DATA_DIR, f"weather_archive_{city_name}_{start_date}_{end_date}.json")
-    with open(raw_path, "w") as f:
-        json.dump(data, f)
-
-    logger.info(f"[archive] Saved raw data to {raw_path}")
-    return data
+    # if we get here, all retries failed with 429
+    raise Exception(f"Archive API request failed for {city_name} after {MAX_RETRIES} retries (rate limited)")

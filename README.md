@@ -43,10 +43,16 @@ pip install -r requirements.txt
 
 ## 2. Run the ingestion Pipeline
 
-This fetches data from the API and loads it into BigQuery:
+This downloads raw archive data from the API and transforms it into an hourly table:
 
 ```
-python -m scripts.run_pipeline
+python -m scripts.fetch_historical
+```
+
+Then to load the data to bigquery
+
+```
+python -m scripts.load_historical_to_bigquery
 ```
 
 ## 📦 dbt Setup

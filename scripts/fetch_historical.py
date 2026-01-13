@@ -3,7 +3,6 @@ import pandas as pd
 
 from pipelines.extract_historical import extract_historical
 from pipelines.transform import transform
-from pipelines.load import load
 from utils.logger import get_logger
 from utils.config import CITIES, HISTORICAL_OUTPUT_CSV_PATH,ARCHIVE_START_DATE,ARCHIVE_END_DATE
 
