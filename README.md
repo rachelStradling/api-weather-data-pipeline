@@ -141,3 +141,10 @@ combine Python ingestion with BigQuery storage
 - build clean weather datasets for trip planning
 - compute metrics relevant to Japanese travel (visibility, wind, ropeway safety, rainfall, snow)
 It’s both a learning project and a practical dataset for planning future trips.
+
+## Next Steps
+
+This project is still regularly being built on. In the near future, I aspire to add:
+- Forecast data model that will allow to validate travel plans just before departure.
+- Create Airflow DAG, schedule daily forecast + historical data loads.
+- Create a Tableau dashboard connected to BigQuery data.
