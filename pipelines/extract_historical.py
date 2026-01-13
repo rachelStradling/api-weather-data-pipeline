@@ -8,8 +8,8 @@ from utils.config import ARCHIVE_API_URL, CITIES, HOURLY_VARIABLES, DAILY_VARIAB
 
 logger = get_logger(__name__)
 
-MAX_RETRIES = 5
-RETRY_SLEEP_SECONDS = 60  # wait 1 min on 429
+MAX_RETRIES = 5 # retry up to 5 times on 429 error
+RETRY_SLEEP_SECONDS = 60  # wait 1 min per try
 
 def extract_historical(city_name: str, start_date: str, end_date: str):
     """

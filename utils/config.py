@@ -73,6 +73,7 @@ DAILY_VARIABLES = "sunrise,sunset"
 # File paths
 RAW_DATA_DIR="data/raw"
 HISTORICAL_OUTPUT_CSV_PATH = "data/raw/historical/weather_hourly_historical_multi_city.csv"
+FORECAST_OUTPUT_CSV_PATH = "data/raw/forecast/weather_hourly_forecast_multi_city.csv"
 
 # Thresholds for analysis
 CLEAR_SKY_THRESHOLD = 30.0       # % cloud cover
@@ -84,4 +85,5 @@ SNOW_EVENT_THRESHOLD_MM = 5.0    # daily snowfall to count as "snow event"
 BQ_PROJECT_ID = "weather-travel-recommendations"
 BQ_DATASET_ID = "weather"
 BQ_TABLE_HOURLY_HIST = "hourly_historical"
+BQ_TABLE_HOURLY_FORECAST = "hourly_forecast"
 
