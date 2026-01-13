@@ -69,3 +69,20 @@ models:
       - name: daytime_clear_sky_hours_ratio
         description: "Fraction of daytime hours with low cloud cover (< 30%) for the month."
 
+  - name: stg_hourly_forecast
+    description: "Staging model for forecast hourly weather data."
+    columns:
+      - name: city
+        description: "City name as returned by the API."
+        tests:
+          - not_null
+      - name: timestamp
+        description: "Hourly timestamp for the weather observation."
+        tests:
+          - not_null
+      - name: is_daytime
+        description: "Boolean flag indicating whether the hour is between local sunrise and sunset."
+      - name: sunrise_dt
+        description: "Local datetime of sunrise for the day."
+      - name: sunset_dt
+        description: "Local datetime of sunset for the day."

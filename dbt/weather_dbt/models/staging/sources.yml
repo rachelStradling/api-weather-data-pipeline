@@ -6,4 +6,4 @@ sources:
     schema: weather
     tables:
       - name: hourly_historical
-
+      - name : hourly_forecast
