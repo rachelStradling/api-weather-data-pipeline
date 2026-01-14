@@ -86,3 +86,19 @@ models:
         description: "Local datetime of sunrise for the day."
       - name: sunset_dt
         description: "Local datetime of sunset for the day."
+
+  - name: int_weather_forecast_daily
+    description: "Intermediate daily aggregates per city, used as a building block for final forecast metrics."
+    columns:
+      - name: max_daytime_wind_speed
+        description: "Maximum daytime wind speed (10m) for the day, in m/s."
+      - name: max_daytime_wind_gust
+        description: "Maximum daytime wind gust speed (10m) for the day, in m/s."
+      - name: rain_free_day
+        description: "TRUE if no precipitation was recorded that day."
+      - name: snow_free_day
+        description: "TRUE if no snowfall was recorded that day."
+      - name:  daytime_clear_sky_ratio
+        description: "Ratio of daytime hours where cloud cover was under 30%"
+      - name: best_visibility_hour
+        description: "Hour of the day where the visibility was best (lowest cloudcover)"
