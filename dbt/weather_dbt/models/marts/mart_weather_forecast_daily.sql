@@ -27,6 +27,7 @@ select
 	
     # Rain / snow metrics
 	rain_free_day,
+    total_precip_mm,
     case
       when rain_free_day then 'no_rain'
       when total_precip_mm < 10 then 'light_rain'
@@ -34,12 +35,13 @@ select
       else 'heavy_rain'
     end as rain_category,
 	snow_free_day,
+    total_snowfall_mm,
     case
       when snow_free_day then 'no_snow'
-      when total_snow_mm < 10 then 'light_snow'
-      when total_snow_mm < 100 then 'snowy'
+      when total_snowfall_mm < 10 then 'light_snow'
+      when total_snowfall_mm < 100 then 'snowy'
       else 'heavy_snow'
-    end as rain_category,
+    end as snow_category,
 	# Visibility metrics
 	daytime_clear_sky_ratio,
     best_visibility_hour,

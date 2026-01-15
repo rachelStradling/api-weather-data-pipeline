@@ -8,6 +8,7 @@ with hourly as (
         wind_speed_10m,
         wind_gusts_10m,
         precipitation,
+        snowfall,
         cloud_cover
     from {{ ref('stg_hourly_forecast') }}
 ),
@@ -32,11 +33,11 @@ day_level as (
         case when sum(snowfall) = 0 then true else false end as snow_free_day,
         
         -- visibility
-        count_if(is_daytime) as daytime_hours,
-        count_if(is_daytime and cloud_cover < 30) as clear_daytime_hours,
+        count(if(is_daytime,1,NULL)) as daytime_hours,
+        count(if(is_daytime and cloud_cover < 30,1,NULL)) as clear_daytime_hours,
         safe_divide(
-            count_if(is_daytime and cloud_cover < 30),
-            count_if(is_daytime)
+            count(if(is_daytime and cloud_cover < 30,1,NULL)),
+            count(if(is_daytime,1,NULL))
         ) as daytime_clear_sky_ratio
     from hourly
     group by city, forecast_date

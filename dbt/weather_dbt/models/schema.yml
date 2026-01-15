@@ -102,3 +102,18 @@ models:
         description: "Ratio of daytime hours where cloud cover was under 30%"
       - name: best_visibility_hour
         description: "Hour of the day where the visibility was best (lowest cloudcover)"
+
+  - name: mart_weather_forecast_daily
+    description: "Forecast mart for travel questions: ropeway likelihood, rain, and visibility."
+    columns:
+      - name: city
+        tests: [not_null]
+      - name: forecast_date
+        tests: [not_null]
+      - name: ropeway_open_likelihood
+      - name: rain_free_day
+      - name: rain_category
+        decription: "Rain classed light if daily total under 10mm, heavy if over 25mm"
+      - name: visibility_category
+      - name: best_visibility_hour
+        description: "Hour of the day with clearest skies in the selected city, recommended for best views"
