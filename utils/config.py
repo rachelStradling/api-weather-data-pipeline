@@ -48,6 +48,11 @@ CITIES = {
         "longitude": 132.3198,
         "timezone": "Asia/Tokyo",
     },
+    "sapporo": {
+        "latitude": 43.06194,  # Sapporo - City in Northern Japan (Hokkaido)
+        "longitude": 141.35444,
+        "timezone": "Asia/Tokyo",
+    },
 }
 
 # Data ranges for Open-Meteo archive extraction and forecast data
