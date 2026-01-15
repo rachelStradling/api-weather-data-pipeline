@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 with daily as (
   select
     city,

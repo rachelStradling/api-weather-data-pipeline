@@ -1,4 +1,5 @@
-{{ config(materialized='view') }}
+{% set SAFE_WIND = var('ropeway_safe_wind') %}
+{% set SAFE_GUST = var('ropeway_safe_gust') %}
 
 select
   city,
@@ -31,9 +32,9 @@ select
   -- Ropeway: safe when *daytime* wind conditions stay under thresholds
   case
     when
-      max(case when is_daytime then wind_speed_10m  end) < 15
+      max(case when is_daytime then wind_speed_10m  end) < {{ SAFE_WIND }}
       and
-      max(case when is_daytime then wind_gusts_10m end) < 30
+      max(case when is_daytime then wind_gusts_10m end) < {{ SAFE_GUST }}
     then true
     else false
   end as ropeway_safe_day

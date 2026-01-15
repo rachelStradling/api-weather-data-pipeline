@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 select
   * except(is_daytime),
   safe_cast(sunrise as datetime) as sunrise_dt,

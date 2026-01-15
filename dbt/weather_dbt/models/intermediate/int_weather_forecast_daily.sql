@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 with hourly as (
     select
         city,
@@ -30,7 +28,8 @@ day_level as (
         -- rain
         sum(precipitation) as total_precip_mm,
         case when sum(precipitation) = 0 then true else false end as rain_free_day,
-		case when sum(snowfall) = 0 then true else false end as snow_free_day,
+		sum(snowfall) as total_snowfall_mm,
+        case when sum(snowfall) = 0 then true else false end as snow_free_day,
         
         -- visibility
         count_if(is_daytime) as daytime_hours,
