@@ -2,8 +2,10 @@
 
 A small end-to-end project to practice a modern data engineering / analytics stack using real weather data.
 
-The pipeline collects hourly weather conditions from the Open-Meteo API, stores them in BigQuery, and transforms them with dbt to produce clean models and travel-relevant metrics (clear-sky ratios, ropeway safety days, rainfall patterns, etc.).  
-The long-term goal is to make it easier to evaluate the best time of year to visit Japanese destinations like Hakone, Kanazawa, Osaka, and more.
+The pipeline collects hourly weather conditions from the Open-Meteo API, stores them in BigQuery, and transforms them with dbt to produce clean models and travel-relevant metrics (clear-sky ratios, ropeway safe days, rainfall patterns, etc.).  
+The long-term goal is to make it easier to evaluate the best time of year to visit Japanese destinations like Hakone, Kanazawa, Osaka and more ahead of time, then make last minute adjustments using historical weather and forecasts.
+
+The project is inspired by my latest trips, where choosing the right dates was key but I still experienced some unexpected mishaps that I would have been ready for if I knew how windy, rainy or cold certain areas were.
 
 ---
 
@@ -12,7 +14,7 @@ The long-term goal is to make it easier to evaluate the best time of year to vis
 **Flow:**
 
 1. **Python**
-   - Fetches raw weather data (hourly + historical) from the Open-Meteo API  
+   - Fetches raw weather data (hourly + historical + forecast) from the Open-Meteo API  
    - Prepares the data for loading  
    - Loads it into the BigQuery dataset `weather`
 
@@ -23,7 +25,7 @@ The long-term goal is to make it easier to evaluate the best time of year to vis
 3. **dbt**
    - Builds cleaned/staging models on top of the raw tables
    - Adds typed columns (proper datetimes, day/night flags)
-   - Will gradually add daily and monthly metrics
+   - Adds daily and monthly metrics
 
 This structure is intentionally simple but mirrors a real analytics engineering setup.
 
@@ -136,7 +138,7 @@ dbt docs serve
 ## 🎯 Project Purpose
 This project is used to:
 - practice a realistic DE/AE stack
-combine Python ingestion with BigQuery storage
+- combine Python ingestion with BigQuery storage
 - explore dbt for modeling, documentation, and testing
 - build clean weather datasets for trip planning
 - compute metrics relevant to Japanese travel (visibility, wind, ropeway safety, rainfall, snow)
@@ -145,6 +147,8 @@ It’s both a learning project and a practical dataset for planning future trips
 ## Next Steps
 
 This project is still regularly being built on. In the near future, I aspire to add:
-- Forecast data model that will allow to validate travel plans just before departure.
-- Create Airflow DAG, schedule daily forecast + historical data loads.
-- Create a Tableau dashboard connected to BigQuery data.
+- Forecast data model that will allow to validate travel plans just before departure (scheduled January 2026)
+- Add tidal data (daily high/low tide times) to the forecast model for Itsukushima shrine viewing on Miyajima island (end of January 2026)
+- Create Airflow DAG, schedule daily forecast + historical data loads. (February 2026)
+- Create a Tableau dashboard connected to BigQuery data that will assist in travel planning. (February 2026)
+- Predictive models for peak cherry blossom and autumn leaves viewing dates per city based on past data. (March 2026)
