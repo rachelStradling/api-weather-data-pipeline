@@ -12,3 +12,6 @@ data/raw/
 
 # Credentials
 *.json
+utils/config.py
+
+.ipynb_checkpoints/

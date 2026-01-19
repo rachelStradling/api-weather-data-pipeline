@@ -142,7 +142,7 @@ This project is used to:
 - explore dbt for modeling, documentation, and testing
 - build clean weather datasets for trip planning
 - compute metrics relevant to Japanese travel (visibility, wind, ropeway safety, rainfall, snow)
-It’s both a learning project and a practical dataset for planning future trips.
+It’s both a learning project and a practical dataset for planning future trips, which could easily be extended to other destinations.
 
 ## Next Steps
 
@@ -150,5 +150,5 @@ This project is still regularly being built on. In the near future, I aspire to 
 - Forecast data model that will allow to validate travel plans just before departure (scheduled January 2026)
 - Add tidal data (daily high/low tide times) to the forecast model for Itsukushima shrine viewing on Miyajima island (end of January 2026)
 - Create Airflow DAG, schedule daily forecast + historical data loads. (February 2026)
-- Create a Tableau dashboard connected to BigQuery data that will assist in travel planning. (February 2026)
+- Create a Looker dashboard connected to BigQuery data that will assist in travel planning. (February 2026)
 - Predictive models for peak cherry blossom and autumn leaves viewing dates per city based on past data. (March 2026)
