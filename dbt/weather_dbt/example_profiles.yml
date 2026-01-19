@@ -1,0 +1,13 @@
+weather_dbt:
+  outputs:
+    dev:
+      dataset: example_dataset
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      location: EU
+      method: oauth
+      priority: interactive
+      project: example_project
+      threads: 2
+      type: bigquery
+  target: dev
